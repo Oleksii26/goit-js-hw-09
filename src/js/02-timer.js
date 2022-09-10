@@ -11,6 +11,8 @@ const refs = {
   hours: document.querySelector('span[data-hours]'),
   minutes: document.querySelector('span[data-minutes]'),
   seconds: document.querySelector('span[data-seconds]'),
+  sectionTimer: document.querySelector('.timer'),
+  timerElement: document.querySelectorAll('.field')
 };
 
 refs.start.disabled = true;
@@ -30,7 +32,7 @@ const options = {
       alert('Please choose a date in the future');
     }
     else {
-    refs.start.disabled = false;
+      refs.start.disabled = false;
     }
   },
 };
@@ -42,36 +44,36 @@ refs.start.addEventListener('click', () => {
     const currentDate = Date.now();
     const selectedDate = Math.round(new Date(SELECTED_DATE).getTime());
     let deltaDate = selectedDate - currentDate;
-    convertMs(deltaDate); 
+    convertMs(deltaDate);
     console.log(deltaDate);
-     if (deltaDate <= 1000) {
-       clearInterval(setFunc);
-     } 
-   }, 1000);
+    if (deltaDate <= 1000) {
+      clearInterval(setFunc);
+    }
+  }, 1000);
 });
 
 flatpickr(refs.datetimePicker, options);
 
 
 function convertMs(ms) {
-    // Number of milliseconds per unit of time
-    const second = 1000;
-    const minute = second * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-  
-    // Remaining days
-    const days = Math.floor(ms / day);
-    // Remaining hours
-    const hours = Math.floor((ms % day) / hour);
-    // Remaining minutes
-    const minutes = Math.floor(((ms % day) % hour) / minute);
-    // Remaining seconds
-    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-  
-    // return { days, hours, minutes, seconds };
-  
-  
+  // Number of milliseconds per unit of time
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  // Remaining days
+  const days = Math.floor(ms / day);
+  // Remaining hours
+  const hours = Math.floor((ms % day) / hour);
+  // Remaining minutes
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  // Remaining seconds
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  // return { days, hours, minutes, seconds };
+
+
   refs.days.textContent = addLeadingZero(days);
   refs.hours.textContent = addLeadingZero(hours);
   refs.minutes.textContent = addLeadingZero(minutes);
@@ -79,7 +81,16 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-function addLeadingZero(value){
+function addLeadingZero(value) {
   let str = String(value).padStart(2, '0');
   return str;
 }
+
+refs.sectionTimer.style.display = 'flex'
+refs.sectionTimer.style.paddingTop = '20px'
+
+refs.timerElement.forEach(e => {
+   e.style.marginLeft = '20px'
+})
+
+
