@@ -23,7 +23,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    // console.log(selectedDates[0]);
     SELECTED_DATE = selectedDates[0];
     const currentDate = Date.now();
     const selectedDate = Math.round(new Date(selectedDates[0]).getTime());
@@ -40,15 +40,20 @@ const options = {
 refs.start.addEventListener('click', () => {
   refs.start.disabled = true;
   refs.datetimePicker.disabled = true;
+
   const setFunc = setInterval(() => {
+
     const currentDate = Date.now();
     const selectedDate = Math.round(new Date(SELECTED_DATE).getTime());
+
     let deltaDate = selectedDate - currentDate;
     convertMs(deltaDate);
-    console.log(deltaDate);
+   
     if (deltaDate <= 1000) {
       clearInterval(setFunc);
+      return
     }
+    updteTime(convertMs(deltaDate))
   }, 1000);
 });
 
@@ -71,14 +76,14 @@ function convertMs(ms) {
   // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
-  // return { days, hours, minutes, seconds };
+  return { days, hours, minutes, seconds };
+}
 
-
+function updteTime({days, hours, minutes, seconds }) {
   refs.days.textContent = addLeadingZero(days);
   refs.hours.textContent = addLeadingZero(hours);
   refs.minutes.textContent = addLeadingZero(minutes);
   refs.seconds.textContent = addLeadingZero(seconds);
-  return { days, hours, minutes, seconds };
 }
 
 function addLeadingZero(value) {
@@ -90,7 +95,7 @@ refs.sectionTimer.style.display = 'flex'
 refs.sectionTimer.style.paddingTop = '20px'
 
 refs.timerElement.forEach(e => {
-   e.style.marginLeft = '20px'
+  e.style.marginLeft = '20px'
 })
 
 
